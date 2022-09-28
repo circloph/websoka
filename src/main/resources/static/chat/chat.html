@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <link rel="stylesheet" href="../styledPage.css">
+    <link rel="stylesheet" href="chatStyle.css">
+</head>
+<body>
+    <header>
+        <img src="../images/logo.png" alt="Logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a class="hidden" href="../login/login.html">Login</a></li>
+            <li><a class="hidden" href="../registration/registration.html">Registration</a></li>
+            <li><a class="selected" href="chat.html">Chat</a></li>
+        </ul>
+    </nav>
+
+    <div id="wrapper">
+        <div class="button">
+            <input type="submit" value="Connect" id="connect">
+        </div>
+    <div id="window"> 
+        <p id="status">
+        </p>
+        <ul class="list">
+
+        </ul>
+    </div>
+    <form name="message" action="">
+        <input type="text" id="usermsg" size="63" placeholder="Type in something" />
+    </form>
+    <button type="submit" id="submitmsg">send name</button>
+</div>
+<script>
+    var stompClient = null;
+        var isStarted = new Boolean(true);
+        function connect() {
+            var socket = new SockJS('/hello');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({'Authorization': localStorage.getItem("token")}, function (frame) {
+                console.log('Connected: ' + frame);
+                connectToChat();
+                stompClient.subscribe('/topic/logs', function (name) {
+                    showLogs(JSON.parse(name.body).text);
+                });
+            });
+        }
+
+        function connectToChat() {
+            $('#status').append("<p>" + "You are connected to the chat" + "</p>")
+        }
+
+        function showLogs(user) {  	
+            $(".list").append("<li>" + user + "</li>");
+        }
+
+        function sendName() {
+            var message = $('#usermsg').val()
+            stompClient.send("/app/hello", {}, message);
+        }
+
+        $( "#submitmsg" ).click(function() {
+            sendName();
+        })
+
+        $( "#connect" ).click(function() {
+            connect();
+        })
+</script>
+
+</body>
+</html>

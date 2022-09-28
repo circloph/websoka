@@ -1,0 +1,55 @@
+#window {
+    text-align:left;
+    border-radius: 5px;
+    margin:20px auto;
+    margin-bottom:25px;
+    padding:10px;
+    background:rgb(239, 239, 239);
+    height:300px;
+    width:430px;
+    border:1px solid #000000;
+    overflow:auto;
+}
+
+.containerTable {
+    display: table;
+}
+
+.tableRow {
+    display: table-row;
+}
+
+div.tableRow p {
+    display: table-cell;
+}
+#usermsg {
+    margin: 5px 10px 5px 30px;
+    width:383px;
+    border:1px solid #ACD8F0; }
+
+#wrapper {
+    margin:20px auto;
+    padding-bottom:25px;
+    background-color:#49e5b1;
+    width:504px;
+    border-radius: 15px;
+    /* border:1px solid #000000;  */
+    background-image: url('../static/flower.png');
+    background-repeat: repeat-x;
+    background-position: 0px 330px;
+}
+
+.button {
+    text-align: center;
+    margin: 20px 0px 5px 0px;
+}
+
+li {
+    list-style-image: url(../static/nlo.png);
+}
+.inputChat {
+    margin: 0px 120px 0px 120px;
+}
+
+
+

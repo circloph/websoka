@@ -1,0 +1,18 @@
+body {
+    background-color: rgb(255, 0, 0);
+    font-family:      Georgia, "Times New Roman", Times, serif;
+    font-size:        small;
+    margin:           0px;
+}
+
+.v-main {
+    color: #46c28a;
+}
+
+.summary {
+    border: #01321c 1px solid;
+    border-radius: 10px 10px 10px 0px;
+    background-image: url(../static/light.png);
+    margin: 90px;
+    padding: 50px 40px 50px 90px;
+}

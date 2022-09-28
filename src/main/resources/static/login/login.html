@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <link rel="stylesheet" href="../styledPage.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <header>
+        <img src="../images/logo.png" alt="Logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a class="selected hidden" href="login.html">Login</a></li>
+            <li><a class="hidden" href="../registration/registration.html">Registration</a></li>
+            <li><a href="../chat/chat.html">Chat</a></li>
+        </ul>
+    </nav>
+
+    <div id="login">
+
+        <div class="containerTable">
+
+            <div class="tableRow">
+                <p>
+                    Enter login
+                </p>
+                <p>
+                    <input type="text" name="login" id="loginForm">
+                </p>
+            </div>
+            <div class="tableRow">
+                <p>
+                    Enter password
+                </p>
+                <p>
+                    <input type="password" name="password" id="passwordForm">
+                </p>
+            </div>
+            <div class="tableRow">
+                <p>
+
+                </p>
+                <p>
+                    <input type="submit" id="send">
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2012, Starbuzz Coffee
+        <br>
+        All trademarks and registered trademarks appearing on 
+        this site are the property of their respective owners.
+    </footer>
+
+
+    <script>
+    var gulp = require('gulp');
+    const fileinclude = require('gulp-file-include');
+    function login() {
+        var login = $('#loginForm').val()
+        var password = $('#passwordForm').val()
+        var varobject = {
+            login: login, 
+            password: password, 
+        };
+        alert(JSON.stringify(varobject))
+        $.ajax({
+                url: "/login",
+                type: "POST",
+                data: JSON.stringify(varobject),
+                contentType: 'application/json;',
+                success: function (response) {
+                localStorage.setItem("token", response.token)
+                localStorage.setItem('login', login)
+                $('.hidden').css('display', 'none');
+                // let p = document.createElement('p');
+                // p.textContent = 'login'
+                // p.style.cssText = 'float:right;'
+                // document.getElementsByTagName('header')[0].append(p)
+                window.location= '/chat/chat.html'
+                },
+                dataType: "json"
+            });
+    }
+
+    $( "#send" ).click(function() {
+            var token = login();
+        })
+    </script>
+</body>
+</html>

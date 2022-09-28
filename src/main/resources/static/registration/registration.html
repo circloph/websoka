@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <link rel="stylesheet" href="../styledPage.css">
+    <link rel="stylesheet" href="registrationStyle.css">
+</head>
+<body>
+    <header>
+        <img src="../images/logo.png" alt="Logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a class="hidden" href="../login/login.html">Login</a></li>
+            <li><a class="selected" href="registration.html">Registration</a></li>
+            <li><a href="../chat/chat.html">Chat</a></li>
+        </ul>
+    </nav>
+    <div id="registration">
+
+        <div class="containerTable">
+
+            <div class="tableRow">
+                <p>
+                    Enter firstname
+                </p>
+                <p>
+                    <input type="text" name="name" id="name">
+                </p>
+            </div>
+            <div class="tableRow">
+                <p>
+                    Enter login
+                </p>
+                <p>
+                    <input type="text" name="login" id="login">
+                </p>
+            </div>
+            <div class="tableRow">
+                <p>
+                    Enter password
+                </p>
+                <p>
+                    <input type="password" name="password" id="password">
+                </p>
+            </div>
+            <div class="tableRow">
+                <p>
+
+                </p>
+                <p>
+                    <input type="submit" id="send">
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        &copy; 2012, Starbuzz Coffee
+        <br>
+        All trademarks and registered trademarks appearing on 
+        this site are the property of their respective owners.
+    </footer>
+
+    <script>
+        function registration() {
+        var name = $('#name').val()
+        var login = $('#login').val()
+        var password = $('#password').val()
+        var varobject = {
+            name: name,
+            login: login, 
+            password: password, 
+        };
+        $.ajax({
+                url: "/registration",
+                type: "POST",
+                data: JSON.stringify(varobject),
+                contentType: 'application/json;',
+                success: function (response) {
+                window.location="/login/login.html"
+                },
+                dataType: "json"
+            });
+    }
+
+        $( "#send" ).click(function() {
+            var token = registration();
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  postgres:
+      image: postgres:14.2
+      volumes:
+        - /home/jeki/data/postgres:/var/lib/postgresql
+        - /home/jeki/data/dump:/db-dump
+      ports: 
+        - 5432:5432
+      environment:
+        POSTGRES_DB: test
+        POSTGRES_USER: test
+        POSTGRES_PASSWORD: test

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websoka</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <link rel="stylesheet" href="chat/chatStyle.css">
+    <link rel="stylesheet" href="styledPage.css">
+</head>
+<body>
+    <header>
+        <img src="images/logo.png" alt="Logo">
+    </header>
+        <input type="submit" onclick="create()">
+    <script>
+        function create() {
+            let p = document.createElement('p');
+            p.textContent = 'текст'
+            p.style.cssText = 'float:right;'
+            document.getElementsByTagName('header')[0].append(p)
+        }
+    </script>
+    
+</body>
+</html>
