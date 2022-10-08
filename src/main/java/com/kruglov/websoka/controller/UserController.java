@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 
+import com.kruglov.websoka.model.dto.MessageRequest;
 import com.kruglov.websoka.model.dto.MessageResponse;
 import com.kruglov.websoka.service.UserService;
 
@@ -18,7 +19,7 @@ public class UserController {
     
     @MessageMapping("/hello")
     @SendTo("/topic/logs")
-    public MessageResponse sendMessage(String message) {
+    public MessageResponse sendMessage(MessageRequest message) {
         return userService.sendMessage(message);
     }
 

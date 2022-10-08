@@ -9,44 +9,80 @@
                 rounded
                 text
                 x-small
+                @click="connect()"
                 >Connect
             </v-btn>
         </div>
         <div id="window"> 
-            <p id="status">
-            </p>
-            <ul class="list">
-
-            </ul>
+            <li v-for="message, index in messages" v-bind:key="index"> 
+                        {{message}}
+            </li>
         </div>
-        <!-- <form name="message" action=""> -->
-            <!-- <v-input type="text" id="usermsg" size="63" placeholder="Type in something" /> -->
-        <!-- </form> -->
         <div class="inputChat">
             <v-text-field
             label="Message"
-            :rules="rules"
             hide-details="auto"
             light
+            v-model="message"
             ></v-text-field>
         </div>
-        <div class="button">
         <v-btn
             elevation="1"
             class="mx-"
             fab
             light
             color='#98FB98'
+            @click="sendName()"
             >Send
         </v-btn>
-    </div>
     </div>  
 </template>
 
 <script>
+    import ms from 'ms';
+import * as SockJS from 'sockjs-client';
+    import Stomp from "webstomp-client";
+
+
     export default {
-    middleware: 'auth'
-  }
+      data: () => ({
+        valid: false, 
+        username: '',
+        password: '',
+        reponse: '',
+        posts: '',
+        message: '',
+        messages: [],
+        middleware: 'auth'
+      }),
+      methods: {
+        connect() {
+            this.socket = new SockJS("http://localhost:8080/hello");
+            this.stompClient = Stomp.over(this.socket);
+            this.stompClient.connect(
+                {'Authorization': localStorage.getItem("token"), 
+                'Sec-Fetch-Mode': 'no-cors',
+                'Access-Control-Allow-Origin': '*'},
+                frame => {
+                this.connected = true;
+                console.log(frame);
+                this.stompClient.subscribe("/topic/logs", tick => {
+                    this.messages.push(JSON.parse(tick.body).text)
+                });
+                },
+                error => {
+                console.log(error);
+                this.connected = false;
+                }
+            );
+        },
+        sendName() {
+            const msg = { message: this.message }
+            console.log(JSON.stringify(msg))
+            this.stompClient.send("/app/hello", JSON.stringify(msg), {})
+        }
+    }
+}
 </script>
 
-<style scoped src="../assets/chat.css"></style>
+    <style scoped src="../assets/chat.css"></style>

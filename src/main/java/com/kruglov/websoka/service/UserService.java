@@ -15,6 +15,7 @@ import com.kruglov.websoka.model.Role;
 import com.kruglov.websoka.model.User;
 import com.kruglov.websoka.model.dto.LoginRequest;
 import com.kruglov.websoka.model.dto.LoginResponse;
+import com.kruglov.websoka.model.dto.MessageRequest;
 import com.kruglov.websoka.model.dto.MessageResponse;
 import com.kruglov.websoka.model.dto.RegistrationRequest;
 import com.kruglov.websoka.repository.RoleRepository;
@@ -39,8 +40,8 @@ public class UserService {
     @Autowired
     private JwtTokenProvider provider;
 
-    public MessageResponse sendMessage(String message) {
-        return new MessageResponse(message);
+    public MessageResponse sendMessage(MessageRequest message) {
+        return new MessageResponse(message.getMessage());
     }
 
     public LoginResponse login(LoginRequest request) {

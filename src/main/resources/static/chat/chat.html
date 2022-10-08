@@ -47,7 +47,7 @@
         function connect() {
             var socket = new SockJS('/hello');
             stompClient = Stomp.over(socket);
-            stompClient.connect({'Authorization': localStorage.getItem("token")}, function (frame) {
+            stompClient.connect({'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0Iiwicm9sZSI6eyJlbXB0eSI6ZmFsc2UsInByZXNlbnQiOnRydWV9LCJpYXQiOjE2NjQ2MTc3OTYsImV4cCI6MTY2NDYxODE1Nn0.mAoO5coAJQGnDESum-lOAD-W3J0DaXVCLrk_VxWyP-c' }, function (frame) {
                 console.log('Connected: ' + frame);
                 connectToChat();
                 stompClient.subscribe('/topic/logs', function (name) {

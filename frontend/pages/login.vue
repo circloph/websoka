@@ -65,8 +65,6 @@
 
 <script>
 
-
-
     export default {
       data: () => ({
         valid: false, 
@@ -77,15 +75,10 @@
       }),
       methods: {
       async fetchSomething() {
-        const ip = await this.$axios.$post('http://localhost:8080/login', {
+        this.$store.dispatch('fetchCounter', {
           login: this.username,
           password: this.password
         })
-        this.$store.commit('setToken', ip.token )
-        this.$store.commit('setUsername', ip.login )
-        this.$store.commit('setUserId', ip.userId )
-        this.$store.commit('setRole', ip.role )
-        alert(this.$store.getters['getToken'])
         this.$router.push('/')
       },
     }

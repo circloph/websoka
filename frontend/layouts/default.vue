@@ -23,7 +23,7 @@
             </v-list-item-title>
           </v-list-item>
 
-          <!-- <span v-if="role === ''"> -->
+          <span v-if="!isAuth">
           <v-list-item nuxt to="login">
             <v-list-item-icon>
               <v-icon>mdi-login</v-icon>
@@ -31,16 +31,16 @@
             <v-list-item-title>Login
             </v-list-item-title>
           </v-list-item>
-        <!-- </span> -->
-        <!-- <span v-if='{role} === null'> -->
+        </span>
+        <span v-if="!isAuth">
           <v-list-item nuxt to="/registration">
             <v-list-item-icon>
               <v-icon>mdi-account-plus</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Registration</v-list-item-title>
           </v-list-item>
-        <!-- </span> -->
-          <span v-if="role != null">
+        </span>
+          <span v-if="isAuth">
           <v-list-item nuxt to="/chat">
             <v-list-item-icon>
               <v-icon>mdi-forum</v-icon>
@@ -78,7 +78,7 @@
     </v-main>
     <v-footer class="footer" app>
       <p> 
-          {{ role }}
+          {{ isAuth }}
       </p>
     </v-footer>
   </v-app>
@@ -93,12 +93,15 @@ export default {
       group: null,
       username: '',
     }),
-    сomputed: {
-      role() {
-        alert(this.$store.getters['index/getToken'])
-        return this.$store.getters['getToken']
-      }
+    computed: {
+      isAuth: function () {
+        return this.$store.getters['isAuth']
+      },
+    },
+    created() {
+      console.log('zhooopa');
     }
+    
   }
 </script>
 
