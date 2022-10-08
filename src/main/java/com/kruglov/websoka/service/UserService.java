@@ -1,6 +1,10 @@
 package com.kruglov.websoka.service;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,5 +66,13 @@ public class UserService {
         User user = new User(request.getName(), request.getLogin(), encoder.encode(request.getPassword()), role);
 
         return userRepository.save(user);
+    }
+
+    public Map<Long, String> getUsers() {
+        return userRepository.findAll().stream().collect(Collectors.toMap(u -> u.getId(), u -> u.getName()));
+    }
+
+    public User getUser(Long id) {
+        return userRepository.findById(id).get();
     }
 }

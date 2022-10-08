@@ -44,7 +44,7 @@ div.tableRow p {
     margin: 20px 0px 5px 0px;
 }
 
-li {
+#window li {
     list-style-image: url(../static/nlo.png);
 }
 .inputChat {

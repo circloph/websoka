@@ -1,5 +1,7 @@
 package com.kruglov.websoka.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -28,4 +30,5 @@ public class UserController {
     public String handleException(AccessDeniedException exception) {
         return "Access denied";
     }
+
 }
