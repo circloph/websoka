@@ -48,6 +48,14 @@
             <v-list-item-title>Chat</v-list-item-title>
           </v-list-item>
         </span>
+          <span v-if="isAuth">
+          <v-list-item nuxt to="/single">
+            <v-list-item-icon>
+              <v-icon>mdi-forum</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>SingleChat</v-list-item-title>
+          </v-list-item>
+        </span>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>

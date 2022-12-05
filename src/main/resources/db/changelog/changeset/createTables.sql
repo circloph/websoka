@@ -14,6 +14,13 @@ CREATE TABLE users (
     role_id INT REFERENCES roles(id)
 );
 
+CREATE TABLE chat_rooms (
+    id serial PRIMARY KEY,
+    chat_id varchar(180),
+    sender_id varchar(180),
+    recipient_id varchar(180)
+);
+
 INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
 INSERT INTO roles (name) VALUES ('ROLE_CLIENT');
 INSERT INTO users (login, password, name, role_id) VALUES ('test', '$2a$12$W4lg8KxcNczNbztRu.X9zu1SBWP4kk7ZPpKUmGm/9Cx0kWs1685pS', 'lolka', 1);

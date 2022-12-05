@@ -5,7 +5,7 @@
             <div class="dialogues_window">
                 <li  v-bind:class="{ white: clicked==index }" @click="changeStyle(index)"
                      v-for="dialog, index in dialogues" v-bind:key="index"> 
-                    <span> {{dialog}} </span>    
+                    <span> {{dialog.name}} </span>    
                 </li>
             </div>
         </div>
@@ -71,9 +71,11 @@ import * as SockJS from 'sockjs-client';
         middleware: 'auth',
         dialogues: [],
         clicked: '',
-        map: {}
       }),
       methods: {
+        showResponse(response) {
+            alert("----------------------------------------" + response.body + "----------------------------------------------------")
+        },
         connect() {
             this.socket = new SockJS("http://localhost:8080/hello");
             this.stompClient = Stomp.over(this.socket);
@@ -84,34 +86,54 @@ import * as SockJS from 'sockjs-client';
                 frame => {
                 this.connected = true;
                 console.log(frame);
-                this.stompClient.subscribe("/topic/logs", tick => {
-                    this.messages.push(JSON.parse(tick.body).text)
-                });
+                // this.stompClient.subscribe("/topic/logs", tick => {
+                //     this.messages.push(JSON.parse(tick.body).text)
+                // }); 
+                //возможно тут передавать определенные вещи необхзодимо
+                console.log(this.dialogues[0])
+                console.log(this.dialogues[this.clicked])
+                console.log(this.dialogues[this.clicked].id)
+                this.stompClient.subscribe("/user/" + this.dialogues[this.clicked].id + "/queue/messages", this.showResponse())
                 },
                 error => {
-                console.log(error);
-                this.connected = false;
+                    console.log(error);
+                    this.connected = false;
                 }
             );
         },
+        // onMessageReceived: function(message) {
+        //   alert(message.body);
+        // },
         changeStyle(index) {
             this.clicked = index;
             console.log(index)
         },
         sendName() {
-            console.log(this.dialogues)
-            const msg = { message: this.message }
+            console.log("WARNING")
+            // console.log(this.$store.commit('getUsername'))
+            console.log(this.$store.getters.getUserId)
+            console.log(this.$store.getters.getUsername)
+            const msg = {
+                senderId: this.$store.getters.getUserId,
+                recipientId: this.dialogues[this.clicked].id,
+                senderName: this.$store.getters.getUsername,
+                recipientName: this.dialogues[this.clicked].name,
+                content: this.message,
+                timestamp: new Date(),
+            }
+            console.log(msg)
+            // const msg = { message: this.message }
             console.log(JSON.stringify(msg))
-            this.stompClient.send("/app/hello", JSON.stringify(msg), {})
+            this.stompClient.send("/app/chat", JSON.stringify(msg), {})
+        },
+    },
+    computed: {
+        userId: function() {
+            return this.$store.getters.getUserId
         }
     },
     async mounted() {
-        // this.dialogues = ['lola', 'lala', 'zhopa'];
-        // this.dialogues = await this.$axios.$get('http://localhost:8080/dialogues')
-        // const map = new Map();
-        this.map = await this.$axios.$get('http://localhost:8080/dialogues')
-        // map.get(0)
-        this.dialogues = this.map.values();
+        this.dialogues = await this.$axios.$get('http://localhost:8080/dialogues')
         console.log(this.dialogues)
     }
 }

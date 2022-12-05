@@ -39,7 +39,7 @@ public class AuthController {
     }    
 
     @GetMapping("/dialogues")
-    public Map<Long, String> getDialogues() {
+    public List<User> getDialogues() {
         return userService.getUsers();
     }
 

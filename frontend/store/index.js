@@ -15,7 +15,7 @@ export const state = () => ({
     getUsername(state) {
       return state.username
     },
-    getUserId(state) {
+    getUserId: state => {
       return state.userId
     },
     getRole(state) {

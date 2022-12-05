@@ -64,11 +64,11 @@ import * as SockJS from 'sockjs-client';
                 'Sec-Fetch-Mode': 'no-cors',
                 'Access-Control-Allow-Origin': '*'},
                 frame => {
-                this.connected = true;
-                console.log(frame);
-                this.stompClient.subscribe("/topic/logs", tick => {
-                    this.messages.push(JSON.parse(tick.body).text)
-                });
+                    this.connected = true;
+                    console.log(frame);
+                    this.stompClient.subscribe("/topic/logs", tick => {
+                        this.messages.push(JSON.parse(tick.body).text)
+                    });
                 },
                 error => {
                 console.log(error);

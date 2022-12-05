@@ -18,7 +18,7 @@ import com.kruglov.websoka.repository.UserRepository;
 public class JwtUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
-
+    
     @Autowired
     public JwtUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;

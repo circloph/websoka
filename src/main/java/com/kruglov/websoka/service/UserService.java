@@ -68,8 +68,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Map<Long, String> getUsers() {
-        return userRepository.findAll().stream().collect(Collectors.toMap(u -> u.getId(), u -> u.getName()));
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     public User getUser(Long id) {
