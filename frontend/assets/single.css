@@ -4,7 +4,7 @@
     height: 493px;
     left: 50px;
     top: 20px;
-    background-color: #49e5b1;
+    background-color: #4682B4;
     border-radius: 15px;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .dialogues_window li {
-    background-color: aquamarine;
+    background-color: #4682B4;
     border: gray solid 1px;
     color: black;
     list-style-type: none;

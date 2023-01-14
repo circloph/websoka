@@ -32,7 +32,7 @@
             cols="1"
               md="1"
               >
-              <h3 style="margin:0px; padding:0px">
+              <h3 style="margin:0px; padding:0px;">
                 Password
               </h3>
             </v-col>

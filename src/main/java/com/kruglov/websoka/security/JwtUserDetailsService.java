@@ -32,7 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         Collection<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(user.getRole().getName()));
-        return new JwtUser(user.getId(), user.getLogin(), user.getPassword(), user.getName(), roles);
+        return new JwtUser(user.getId(), user.getLogin(), user.getPassword(), user.getFirstname(), roles);
     }
 
     

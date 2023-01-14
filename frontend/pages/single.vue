@@ -5,7 +5,7 @@
             <div class="dialogues_window">
                 <li  v-bind:class="{ white: clicked==index }" @click="changeStyle(index)"
                      v-for="dialog, index in dialogues" v-bind:key="index"> 
-                    <span> {{dialog.name}} </span>    
+                    <span>{{dialog.firstname}} </span>    
                 </li>
             </div>
         </div>
@@ -21,13 +21,14 @@
                 rounded
                 text
                 x-small
+                :disabled="!status"
                 @click="connect()"
                 >Connect
             </v-btn>
         </div>
         <div id="window"> 
             <li v-for="message, index in messages" v-bind:key="index"> 
-                        {{message}}
+                       {{message.content}}
             </li>
         </div>
         <div class="inputChat">
@@ -70,11 +71,13 @@ import * as SockJS from 'sockjs-client';
         messages: [],
         middleware: 'auth',
         dialogues: [],
+        befDialogues: [],
         clicked: '',
+        status: true
       }),
       methods: {
         showResponse(response) {
-            alert("----------------------------------------" + response.body + "----------------------------------------------------")
+            alert("----------------------------------------" + response + "----------------------------------------------------")
         },
         connect() {
             this.socket = new SockJS("http://localhost:8080/hello");
@@ -84,35 +87,28 @@ import * as SockJS from 'sockjs-client';
                 'Sec-Fetch-Mode': 'no-cors',
                 'Access-Control-Allow-Origin': '*'},
                 frame => {
-                this.connected = true;
-                console.log(frame);
-                // this.stompClient.subscribe("/topic/logs", tick => {
-                //     this.messages.push(JSON.parse(tick.body).text)
-                // }); 
-                //возможно тут передавать определенные вещи необхзодимо
-                console.log(this.dialogues[0])
-                console.log(this.dialogues[this.clicked])
-                console.log(this.dialogues[this.clicked].id)
-                this.stompClient.subscribe("/user/" + this.dialogues[this.clicked].id + "/queue/messages", this.showResponse())
-                },
-                error => {
-                    console.log(error);
-                    this.connected = false;
-                }
+                    this.connected = true;
+                    this.stompClient.subscribe("/user/" + this.$store.getters.getUserId +"/queue/messages",
+                        tick => {
+                                this.messages.push(tick.body)
+                            }
+                    ),
+                    this.messages = this.$store.dispatch('getMessages')
+                    this.messages = this.$store.getters.getContent
+                    console.log("connect " + this.messages.content)
+                    error => {
+                        console.log(error);
+                        this.connected = false;
+                    }
+            }
             );
+            this.status = false;
         },
-        // onMessageReceived: function(message) {
-        //   alert(message.body);
-        // },
         changeStyle(index) {
             this.clicked = index;
             console.log(index)
         },
         sendName() {
-            console.log("WARNING")
-            // console.log(this.$store.commit('getUsername'))
-            console.log(this.$store.getters.getUserId)
-            console.log(this.$store.getters.getUsername)
             const msg = {
                 senderId: this.$store.getters.getUserId,
                 recipientId: this.dialogues[this.clicked].id,
@@ -121,9 +117,6 @@ import * as SockJS from 'sockjs-client';
                 content: this.message,
                 timestamp: new Date(),
             }
-            console.log(msg)
-            // const msg = { message: this.message }
-            console.log(JSON.stringify(msg))
             this.stompClient.send("/app/chat", JSON.stringify(msg), {})
         },
     },
@@ -133,7 +126,9 @@ import * as SockJS from 'sockjs-client';
         }
     },
     async mounted() {
-        this.dialogues = await this.$axios.$get('http://localhost:8080/dialogues')
+        this.befDialogues = await this.$axios.$get('http://localhost:8080/dialogues')
+        console.log(this.befDialogues)
+        this.dialogues =  this.befDialogues.filter((s) => s.firstname !== this.$store.getters.getUsername)
         console.log(this.dialogues)
     }
 }

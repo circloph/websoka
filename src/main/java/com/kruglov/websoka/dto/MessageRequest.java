@@ -1,4 +1,4 @@
-package com.kruglov.websoka.model.dto;
+package com.kruglov.websoka.dto;
 
 public class MessageRequest {
 
@@ -8,12 +8,8 @@ public class MessageRequest {
         this.message = message;
     }
 
-    
-
     public MessageRequest() {
     }
-
-
 
     public String getMessage() {
         return message;

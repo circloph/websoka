@@ -1,19 +1,22 @@
-
-
 export const state = () => ({
-    token: '',
-    username: '',
     userId: '',
+    firstName: '',
+    lastName: '',
+    login: '',
+    status: '',
+    biography: '',
     role: '',
-    isAuth: false
+    token: '',
+    isAuth: false,
+    content: [],
   })
   
   export const getters = {
     getToken(state) {
       return state.token
     },
-    getUsername(state) {
-      return state.username
+    getFirstName(state) {
+      return state.firstName
     },
     getUserId: state => {
       return state.userId
@@ -23,6 +26,21 @@ export const state = () => ({
     },
     isAuth(state) {
       return state.isAuth
+    },
+    getLastName(state) {
+      return state.lastName
+    },
+    getStatus(state) {
+      return state.status
+    },
+    getBiography(state) {
+      return state.biography
+    },
+    getLogin(state) {
+      return state.login
+    },
+    getContent(state) {
+      return state.content
     }
   }
   
@@ -34,8 +52,8 @@ export const state = () => ({
         maxAge: 60 * 60 * 24 * 7
       })
     },
-    setUsername(state, username) {
-      return state.username = username
+    setFirstName(state, firstName) {
+      return state.firstName = firstName
     },
     setUserId(state, userId) {
       return state.userId = userId
@@ -43,19 +61,83 @@ export const state = () => ({
     setRole(state, role) {
       return state.role = role
     },
-    setAuth(state, status) {
-      return state.isAuth = status
-    } 
+    setAuth(state, isAuth) {
+      return state.isAuth = isAuth
+    },
+    setLastName(state, lastName) {
+      return state.lastName = lastName
+    },
+    setStatus(state, status) {
+      return state.status = status
+    },
+    setBiography(state, biography) {
+      return state.biography = biography
+    }, 
+    setLogin(state, login) {
+      return state.login = login
+    },
+    setContent(state, content) {
+      return state.content = content
+    },    
   }
 
   export const actions = {
     async fetchCounter({ commit }, data) {
       const ip = await this.$axios.$post('http://localhost:8080/login', data)
         commit('setToken', ip.token )
-        commit('setUsername', ip.login )
+        commit('setFirstName', ip.firstName )
+        commit('setLogin', ip.login )
         commit('setUserId', ip.userId )
         commit('setRole', ip.role )
         commit('setAuth', true )
+        commit('setLastName', ip.lastName )
+        commit('setStatus', ip.status )
+        commit('setBiography', ip.biography )
         localStorage.setItem('token', ip.token)
-    }
-  }
+    },
+    async registerUser({commit}, data) {
+      const returnedData = await this.$axios.$post('http://localhost:8080/registration', data)
+      commit('setLogin', returnedData.login)
+    },
+    async getProfile({commit}, data) {
+      console.log("In store")
+      console.log(data)
+      const profile = await this.$axios.$get('http://localhost:8080/users/' + data.id, { headers: {
+        'Authorization': "Bearer_" + localStorage.getItem("token")
+      }})
+      console.log("tut ------------------------------------------------------")
+      console.log(profile)
+      commit('setFirstName', profile.firstName )
+      commit('setLogin', profile.login )
+      commit('setUserId', profile.userId )
+      commit('setRole', profile.role )
+      commit('setAuth', true )
+      commit('setLastName', profile.lastName )
+      commit('setStatus', profile.status )
+      commit('setBiography', profile.biography )
+    },
+    async save({commit}, data) {
+      const returnedData = await this.$axios.$put("http://localhost:8080/users/", data, { headers: {
+        'Authorization': "Bearer_" + localStorage.getItem("token")
+      }})
+      commit('setFirstName', returnedData.firstName )
+      commit('setLastName', returnedData.lastName )
+      commit('setStatus', returnedData.status )
+      commit('setBiography', returnedData.biography )
+      commit('setLogin', returnedData.login )
+      commit('setUserId', returnedData.userId )
+      commit('setRole', returnedData.role )
+      commit('setAuth', true )
+    },
+    async addImage({commit}, data) {
+      const returnedData = await this.$axios.$post("http://localhost:8080/upload", data.formData, { headers: {
+        'Authorization': "Bearer_" + localStorage.getItem("token")
+      }})
+    },
+    async getMessages({commit}) {
+      const returnedData = await this.$axios.$get('http://localhost:8080/messages')
+      console.log("getMessages")
+      console.log(returnedData)
+      commit('setContent', returnedData )
+    },
+}

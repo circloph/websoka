@@ -8,6 +8,6 @@ import com.kruglov.websoka.model.ChatRoom;
 @Repository
 public interface ChatRepository extends JpaRepository<ChatRoom, Long> {
 
-    ChatRoom findBySenderIdAndRecipientId(String senderId, String recipientId);
+    ChatRoom findByHostIdAndSlaveId(String hostId, String slaveId);
     
 }

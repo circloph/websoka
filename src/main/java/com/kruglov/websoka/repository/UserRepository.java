@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value ="SELECT exists (SELECT * FROM users WHERE login = :login)", nativeQuery = true)
     boolean checkExistenceByLogin(@Param(value = "login") String login);
+
 }

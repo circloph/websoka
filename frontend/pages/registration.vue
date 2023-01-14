@@ -44,7 +44,7 @@
               light
               solo-inverted
               class="custom-placeholer-color"
-                v-model="username"
+                v-model="login"
                 :counter="10"
                 label="login"
                 required
@@ -93,11 +93,22 @@
       data: () => ({
         valid: false, 
         firstname: '',
-        username: '',
+        login: '',
         password: '',
         reponse: '',
         posts: '',
       }),
+      methods:{
+        fetchSomething() {
+            this.$store.dispatch('registerUser', {
+              name: this.firstname,
+              login: this.login,
+              password: this.password
+            })
+          this.$router.push('/login')
+        }
+
+      }
     }
 </script>
 

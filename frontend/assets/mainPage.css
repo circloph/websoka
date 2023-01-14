@@ -6,7 +6,7 @@ body {
 }
 
 .v-main {
-    color: #46c28a;
+    color: #4682B4;
 }
 
 .summary {
@@ -16,3 +16,8 @@ body {
     margin: 90px;
     padding: 50px 40px 50px 90px;
 }
+
+.leftMargin {
+    margin-left: 5px;
+}
+

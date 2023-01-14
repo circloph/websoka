@@ -1,4 +1,4 @@
-package com.kruglov.websoka.model.dto;
+package com.kruglov.websoka.dto;
 
 import lombok.Data;
 

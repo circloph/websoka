@@ -15,7 +15,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import com.kruglov.websoka.model.dto.LoginResponse;
+import com.kruglov.websoka.dto.UserResponse;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
@@ -31,7 +31,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     AccessDeniedException accessDeniedException) throws IOException, ServletException {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); 
             HttpOutputMessage outputMessage = new ServletServerHttpResponse(response);
-            httpMessageConverter.write(new LoginResponse(), MediaType.APPLICATION_JSON, outputMessage);
+            httpMessageConverter.write(new UserResponse(), MediaType.APPLICATION_JSON, outputMessage);
             template.convertAndSend("/topic/logs", "please login");
     }
     

@@ -1,22 +1,19 @@
 package com.kruglov.websoka.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 
+import com.kruglov.websoka.dto.MessageRequest;
+import com.kruglov.websoka.dto.MessageResponse;
 import com.kruglov.websoka.model.ChatMessage;
-import com.kruglov.websoka.model.ChatNotification;
-import com.kruglov.websoka.model.dto.MessageRequest;
-import com.kruglov.websoka.model.dto.MessageResponse;
 import com.kruglov.websoka.service.ChatService;
 import com.kruglov.websoka.service.UserService;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @Controller
 public class UserController {
@@ -46,11 +43,14 @@ public class UserController {
     public void processMessage(@Payload ChatMessage chatMessage) {
         String chatId = chatService.getChatId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true);
         chatMessage.setChatId(chatId);
-
+        // return userService.sendMessage(new MessageRequest(chatMessage.getContent()));
         // ChatMessage saved = chatMessageService.save(chatMessage);
+
+        ChatMessage savedMessage = chatService.saveMessage(chatMessage);
+
         
-        messagingTemplate.convertAndSendToUser(
-                chatMessage.getRecipientId(),"/queue/messages", "ZHOOOOOPA");
+        messagingTemplate.convertAndSendToUser(savedMessage.getRecipientId(),"/queue/messages", savedMessage.getContent());
+        messagingTemplate.convertAndSendToUser(savedMessage.getSenderId(),"/queue/messages", savedMessage.getContent());
     }
 
 }

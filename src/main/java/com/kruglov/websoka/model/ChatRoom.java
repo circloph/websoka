@@ -30,9 +30,9 @@ public class ChatRoom {
     @Column(name = "chat_id")
     private String chatId;
     @NonNull
-    @Column(name = "sender_id")
-    private String senderId;
+    @Column(name = "host_id")
+    private String hostId;
     @NonNull
-    @Column(name = "recipient_id")
-    private String recipientId;
+    @Column(name = "slave_id")
+    private String slaveId;
 }

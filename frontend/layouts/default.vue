@@ -1,92 +1,26 @@
 <template>
   <div>
     <v-app style="background: #F0FFFF;">
-    <v-navigation-drawer app
-      v-model="drawer"
-      absolute
-      temporary
-    >
-    <v-list
-    nav
-        dense
-      >
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
-          <v-list-item nuxt to="/">
-            <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>
-              Home
-            </v-list-item-title>
-          </v-list-item>
+    <v-app-bar app color=#4682B4 height="65px">
+    
+      <v-btn color="#2F353B" to="/" nuxt> Home </v-btn>
+        <v-btn class="leftMargin" color="#2F353B" v-if="getLogin" to="/single" nuxt> Single </v-btn><br>
+        <v-spacer></v-spacer>
+        <v-avatar v-if="getLogin" color="teal" size="45"></v-avatar>
+        <v-btn clipped-right="true" class="leftMargin" color="#2F353B" v-if="getLogin" to="/users/${userId}"> {{login}} </v-btn>
+        <v-btn clipped-right="true" class="leftMargin" color="#2F353B" v-if="getLogin" to="/lola"> Lola </v-btn>
+        <v-btn class="leftMargin" color="#2F353B" v-if="!getLogin" to="/login" nuxt> Login </v-btn>
+        <v-btn class="leftMargin" color="#2F353B" v-if="!getLogin" to="/registration" nuxt> Register </v-btn>
 
-          <span v-if="!isAuth">
-          <v-list-item nuxt to="login">
-            <v-list-item-icon>
-              <v-icon>mdi-login</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Login
-            </v-list-item-title>
-          </v-list-item>
-        </span>
-        <span v-if="!isAuth">
-          <v-list-item nuxt to="/registration">
-            <v-list-item-icon>
-              <v-icon>mdi-account-plus</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Registration</v-list-item-title>
-          </v-list-item>
-        </span>
-          <span v-if="isAuth">
-          <v-list-item nuxt to="/chat">
-            <v-list-item-icon>
-              <v-icon>mdi-forum</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Chat</v-list-item-title>
-          </v-list-item>
-        </span>
-          <span v-if="isAuth">
-          <v-list-item nuxt to="/single">
-            <v-list-item-icon>
-              <v-icon>mdi-forum</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>SingleChat</v-list-item-title>
-          </v-list-item>
-        </span>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar app
-      absolute
-      color="#43a047"
-      dark
-      shrink-on-scroll
-      prominent
-      fade-img-on-scroll
-      scroll-target="#scrolling-techniques-5"
-      scroll-threshold="500"
-      height="95px"
-    >
-      <template v-slot:img="{ props }">
-        <v-img
-          v-bind="props"
-          gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
-        ></v-img>
-      </template>
-
-      <v-app-bar-nav-icon @click="drawer = true">
-      </v-app-bar-nav-icon>
-      <img src="../static/l.png" alt="">
     </v-app-bar>
+
     <v-main>
       <Nuxt />
     </v-main>
+
     <v-footer class="footer" app>
       <p> 
-          {{ isAuth }}
+        Права защищены
       </p>
     </v-footer>
   </v-app>
@@ -99,17 +33,38 @@ export default {
     data: () => ({
       drawer: false,
       group: null,
-      username: '',
+      login: '',
+      status: false,
+      test: false,
+      userId: ''
     }),
-    computed: {
-      isAuth: function () {
-        return this.$store.getters['isAuth']
+    methods: {
+      logout: function () {
+        localStorage.clear()
+        window.location.href = 'login';
       },
+      getProfile: function() {
+        this.$store.dispatch('getProfile', {
+              id: this.userId
+            })
+      },
+      async getInfoAboutUser(req, res) {
+      }
     },
-    created() {
-      console.log('zhooopa');
-    }
-    
+    computed: {
+      isAuth() {
+        return localStorage.getItem('token')
+      },
+      getLogin() {
+        this.login = this.$store.getters.getLogin
+        return this.login;
+      },
+      getUserId() {
+        this.userId = this.$store.getters.getUserId
+        return this.userId
+      }
+
+    },
   }
 </script>
 
