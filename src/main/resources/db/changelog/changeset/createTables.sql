@@ -40,5 +40,5 @@ INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
 INSERT INTO roles (name) VALUES ('ROLE_CLIENT');
 INSERT INTO users (login, password, firstname, role_id) VALUES ('test', '$2a$12$W4lg8KxcNczNbztRu.X9zu1SBWP4kk7ZPpKUmGm/9Cx0kWs1685pS', 'test', 1);
 INSERT INTO users (login, password, firstname, role_id) VALUES ('lola', '$2a$12$W4lg8KxcNczNbztRu.X9zu1SBWP4kk7ZPpKUmGm/9Cx0kWs1685pS', 'lola', 2);
-INSERT INTO users (login, password, firstname, role_id) VALUES ('cola', '$2a$12$W4lg8KxcNczNbztRu.X9zu1SBWP4kk7ZPpKUmGm/9Cx0kWs1685pS', 'lila', 2);
-INSERT INTO users (login, password, firstname, role_id) VALUES ('zheka', '$2a$12$W4lg8KxcNczNbztRu.X9zu1SBWP4kk7ZPpKUmGm/9Cx0kWs1685pS', 'pola', 2);
+INSERT INTO users (login, password, firstname, role_id) VALUES ('cola', '$2a$12$W4lg8KxcNczNbztRu.X9zu1SBWP4kk7ZPpKUmGm/9Cx0kWs1685pS', 'cola', 2);
+INSERT INTO users (login, password, firstname, role_id) VALUES ('zheka', '$2a$12$W4lg8KxcNczNbztRu.X9zu1SBWP4kk7ZPpKUmGm/9Cx0kWs1685pS', 'zheka', 2);

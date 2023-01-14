@@ -62,8 +62,8 @@ public class AuthController {
     }
 
     @GetMapping("/messages")
-    public List<ChatMessage> getMessages() {
-        return chatService.getHistoryOfMessages();
+    public List<ChatMessage> getMessages(String chatId) {
+        return chatService.getHistoryOfMessages(chatId);
     }
 
     @PutMapping("/users")

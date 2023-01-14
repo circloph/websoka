@@ -41,12 +41,11 @@ public class ChatService {
     }
 
     public ChatMessage saveMessage(ChatMessage message) {
-        message.setSendername("popka");
         return messageRepository.save(message);
     }
 
-    public List<ChatMessage> getHistoryOfMessages() {
-        return messageRepository.findAll();
+    public List<ChatMessage> getHistoryOfMessages(String chatId) {
+        return messageRepository.findByChatId(chatId);
     }
     
 }

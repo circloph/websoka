@@ -3,7 +3,7 @@
         <div class="dialogues">
             <p style="color:black; text-align:center;">Dialogues</p>
             <div class="dialogues_window">
-                <li  v-bind:class="{ white: clicked==index }" @click="changeStyle(index)"
+                <li  v-bind:class="{ white: clicked==dialogues[index].id }" @click="changeStyle(index)"
                      v-for="dialog, index in dialogues" v-bind:key="index"> 
                     <span>{{dialog.firstname}} </span>    
                 </li>
@@ -21,14 +21,13 @@
                 rounded
                 text
                 x-small
-                :disabled="!status"
                 @click="connect()"
                 >Connect
             </v-btn>
         </div>
         <div id="window"> 
             <li v-for="message, index in messages" v-bind:key="index"> 
-                       {{message.content}}
+                       {{ message}}
             </li>
         </div>
         <div class="inputChat">
@@ -73,7 +72,7 @@ import * as SockJS from 'sockjs-client';
         dialogues: [],
         befDialogues: [],
         clicked: '',
-        status: true
+        status: true,
       }),
       methods: {
         showResponse(response) {
@@ -90,10 +89,21 @@ import * as SockJS from 'sockjs-client';
                     this.connected = true;
                     this.stompClient.subscribe("/user/" + this.$store.getters.getUserId +"/queue/messages",
                         tick => {
+                            console.log("subscribe")
+                                console.log(tick.body)
+                                console.log(tick)
                                 this.messages.push(tick.body)
                             }
                     ),
-                    this.messages = this.$store.dispatch('getMessages')
+                    console.log("chat_id " +  this.$store.getters.getUserId + "_" + this.clicked)
+                    let id = ''
+                    if (this.$store.getters.getUserId > this.clicked) {
+                        id = this.$store.getters.getUserId + "_" + this.clicked
+                    } else {
+                        id = this.clicked + "_" + this.$store.getters.getUserId
+                    }
+                    console.log("chat Id = " + Number.isInteger(id))
+                    this.messages = this.$store.dispatch('getMessages', { params: { id }})
                     this.messages = this.$store.getters.getContent
                     console.log("connect " + this.messages.content)
                     error => {
@@ -105,15 +115,15 @@ import * as SockJS from 'sockjs-client';
             this.status = false;
         },
         changeStyle(index) {
-            this.clicked = index;
-            console.log(index)
+            this.clicked = this.dialogues[index].id;
+            console.log(this.clicked)
         },
         sendName() {
             const msg = {
                 senderId: this.$store.getters.getUserId,
-                recipientId: this.dialogues[this.clicked].id,
+                recipientId: this.clicked,
                 senderName: this.$store.getters.getUsername,
-                recipientName: this.dialogues[this.clicked].name,
+                recipientName: "test",
                 content: this.message,
                 timestamp: new Date(),
             }
@@ -128,7 +138,7 @@ import * as SockJS from 'sockjs-client';
     async mounted() {
         this.befDialogues = await this.$axios.$get('http://localhost:8080/dialogues')
         console.log(this.befDialogues)
-        this.dialogues =  this.befDialogues.filter((s) => s.firstname !== this.$store.getters.getUsername)
+        this.dialogues =  this.befDialogues.filter((s) => s.firstname !== this.$store.getters.getFirstName)
         console.log(this.dialogues)
     }
 }

@@ -134,8 +134,10 @@ export const state = () => ({
         'Authorization': "Bearer_" + localStorage.getItem("token")
       }})
     },
-    async getMessages({commit}) {
-      const returnedData = await this.$axios.$get('http://localhost:8080/messages')
+    async getMessages({commit}, data) {
+      console.log("IN store get messages")
+      console.log(data.params.id)
+      const returnedData = await this.$axios.$get('http://localhost:8080/messages', { params: { chatId: data.params.id }})
       console.log("getMessages")
       console.log(returnedData)
       commit('setContent', returnedData )

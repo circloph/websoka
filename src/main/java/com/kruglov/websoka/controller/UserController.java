@@ -49,8 +49,8 @@ public class UserController {
         ChatMessage savedMessage = chatService.saveMessage(chatMessage);
 
         
-        messagingTemplate.convertAndSendToUser(savedMessage.getRecipientId(),"/queue/messages", savedMessage.getContent());
-        messagingTemplate.convertAndSendToUser(savedMessage.getSenderId(),"/queue/messages", savedMessage.getContent());
+        messagingTemplate.convertAndSendToUser(savedMessage.getRecipientId(),"/queue/messages", savedMessage);
+        messagingTemplate.convertAndSendToUser(savedMessage.getSenderId(),"/queue/messages", savedMessage);
     }
 
 }
